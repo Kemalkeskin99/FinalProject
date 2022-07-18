@@ -37,7 +37,7 @@ namespace Business.Concrete
             // iş kodları yazılır
             //yetkisi var mı                            pnp= tak çalıştır
             //en cok ifin kullanıldığı yerdır(business).
-            if (DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 23)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }

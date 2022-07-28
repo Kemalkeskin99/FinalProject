@@ -1,9 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +24,12 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-
+       
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length < 2)
-            {
-                return new ErrorResult(Messages.ProductNameInValid);
-            }
+          
+          
             _productDal.Add(product);
 
             return new SuccessResult(Messages.ProductAdded);
@@ -42,17 +45,17 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
 
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductsListed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
-            return  new SuccessDataResult<List<Product>>(_productDal.GetAll(P => P.CategoryId == id));
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(P => P.CategoryId == id));
         }
 
         public IDataResult<Product> GetById(int id)
         {
-           return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id));
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id));
         }
 
         public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
@@ -62,9 +65,11 @@ namespace Business.Concrete
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()); 
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
 
         }
     }
 }
- 
+
+
+// cross cutting concerns: log,cache,transaction,authorization ....

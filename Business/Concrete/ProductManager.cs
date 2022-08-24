@@ -37,7 +37,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
-            // iş kodları yazılır
+            //  iş kodları yazılır
             //yetkisi var mı                            pnp= tak çalıştır
             //en cok ifin kullanıldığı yerdır(business).
             if (DateTime.Now.Hour == 23)
